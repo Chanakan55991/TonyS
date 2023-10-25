@@ -151,7 +151,7 @@ void TONY_GPS::begin(unsigned long baud)
         txPin = TX2;
     }
 
-    _uart = uartBegin(_uart_nr, baud ? baud : 9600, config, rxPin, txPin, 256, 256, invert, 128);
+    _uart = uartBegin(_uart_nr, baud ? baud : 9600, config, rxPin, txPin, 256, 256, invert, 127);
 
     if(!baud) {
         time_t startMillis = millis();
@@ -162,7 +162,7 @@ void TONY_GPS::begin(unsigned long baud)
 
         if(detectedBaudRate) {
             delay(100); // Give some time...
-            _uart = uartBegin(_uart_nr, detectedBaudRate, config, rxPin, txPin, 256, 256, invert, 128);
+            _uart = uartBegin(_uart_nr, detectedBaudRate, config, rxPin, txPin, 256, 256, invert, 127);
         } else {
             log_e("Could not detect baudrate. Serial data at the port must be present within the timeout for detection to be possible");
             _uart = NULL;
