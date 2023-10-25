@@ -151,7 +151,7 @@ void TONY_GPS::begin(unsigned long baud)
         txPin = TX2;
     }
 
-    _uart = uartBegin(_uart_nr, baud ? baud : 9600, config, rxPin, txPin, 256, invert);
+    _uart = uartBegin(_uart_nr, baud ? baud : 9600, config, rxPin, txPin, 256, 256, invert, 255);
 
     if(!baud) {
         time_t startMillis = millis();
@@ -162,7 +162,7 @@ void TONY_GPS::begin(unsigned long baud)
 
         if(detectedBaudRate) {
             delay(100); // Give some time...
-            _uart = uartBegin(_uart_nr, detectedBaudRate, config, rxPin, txPin, 256, invert);
+            _uart = uartBegin(_uart_nr, detectedBaudRate, config, rxPin, txPin, 256, 256, invert, 255);
         } else {
             log_e("Could not detect baudrate. Serial data at the port must be present within the timeout for detection to be possible");
             _uart = NULL;
@@ -186,12 +186,13 @@ void TONY_GPS::end()
     if(uartGetDebug() == _uart_nr) {
         uartSetDebug(0);
     }
-    uartEnd(_uart, pin_RX, pin_TX);
+    uartEnd(_uart);
     _uart = 0;
 }
 
 size_t TONY_GPS::setRxBufferSize(size_t new_size) {
-    return uartResizeRxBuffer(_uart, new_size);
+    // return uartResizeRxBuffer(_uart, new_size);
+    return 0;
 }
 
 void TONY_GPS::setDebugOutput(bool en)
@@ -635,3 +636,4 @@ float TONY_GPS::f_speed_kmph()
 const float TONY_GPS::GPS_INVALID_F_ANGLE = 1000.0;
 const float TONY_GPS::GPS_INVALID_F_ALTITUDE = 1000000.0;
 const float TONY_GPS::GPS_INVALID_F_SPEED = -1.0;
+
